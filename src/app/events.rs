@@ -2,8 +2,7 @@ use std::io;
 use std::sync::mpsc;
 use std::thread;
 
-use termion::event::Key;
-use termion::input::TermRead;
+use crossterm::event::{Event as CrosstermEvent, KeyCode, KeyEvent, KeyModifiers};
 
 use crate::app::Config;
 use crate::Result;
@@ -19,44 +18,63 @@ pub enum Event {
 #[derive(Debug)]
 pub struct EventHandler {
     rx: mpsc::Receiver<Event>,
-    _input_handle: thread::JoinHandle<()>,
-    _tick_handle: thread::JoinHandle<()>,
+    input_handle: thread::JoinHandle<()>,
+    tick_handle: thread::JoinHandle<()>,
 }
 
 impl EventHandler {
     pub fn from_config(config: &Config) -> EventHandler {
         let (tx, rx) = mpsc::channel();
-
+        let timeout = config.delay().clone();
         // Thread than will handle user input and send events to receiver
         let input_handle = {
             let tx = tx.clone();
             thread::spawn(move || {
                 let stdin = io::stdin();
                 trace!("Input thread spawned");
-                for key in stdin.keys().flatten() {
-                    let event = match key {
-                        Key::Left => Event::PreviousTab,
-                        Key::Right => Event::NextTab,
-                        Key::Char('q') => Event::Exit,
-                        Key::Ctrl('c') => Event::Exit,
-                        Key::Esc => Event::Exit,
-                        _ => continue,
-                    };
-                    let is_exit = event == Event::Exit;
+                while let Ok(_) = crossterm::event::poll(timeout) {
+                    if let Ok(CrosstermEvent::Key(key)) = crossterm::event::read() {
+                        let event = match key {
+                            KeyEvent {
+                                code: KeyCode::Left,
+                                modifiers: _,
+                            } => Event::PreviousTab,
+                            KeyEvent {
+                                code: KeyCode::Right,
+                                modifiers: _,
+                            } => Event::NextTab,
+                            KeyEvent {
+                                code: KeyCode::Char('q'),
+                                modifiers: _,
+                            } => Event::Exit,
+                            KeyEvent {
+                                code: KeyCode::Char('c'),
+                                modifiers: KeyModifiers::CONTROL,
+                            } => Event::Exit,
+                            KeyEvent {
+                                code: KeyCode::Esc,
+                                modifiers: _,
+                            } => Event::Exit,
+                            _ => continue,
+                        };
+                        let is_exit = event == Event::Exit;
 
-                    if let Err(e) = tx.send(event) {
-                        // Now that's just terrible thing to do with poor thread :(
-                        warn!(
-                            "Input thread failed to send event and will be terminated: {:?}",
-                            e
-                        );
-                        return;
-                    }
+                        if let Err(e) = tx.send(event) {
+                            // Now that's just terrible thing to do with poor thread :(
+                            warn!(
+                                "Input thread failed to send event and will be terminated: {:?}",
+                                e
+                            );
+                            return;
+                        }
 
-                    // User had requested an exit, closing this thread too
-                    if is_exit {
-                        trace!("Input thread just sent the Exit event and going to terminate now");
-                        return;
+                        // User had requested an exit, closing this thread too
+                        if is_exit {
+                            trace!(
+                                "Input thread just sent the Exit event and going to terminate now"
+                            );
+                            return;
+                        }
                     }
                 }
             })
@@ -78,8 +96,8 @@ impl EventHandler {
 
         EventHandler {
             rx,
-            _input_handle: input_handle,
-            _tick_handle: tick_handle,
+            input_handle,
+            tick_handle,
         }
     }
 

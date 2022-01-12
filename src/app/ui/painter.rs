@@ -129,9 +129,9 @@ impl<'i> Painter<'i> {
         self.draw_energy_info(&mut frame, left_column[2]);
         self.draw_timing_info(&mut frame, left_column[3]);
         self.draw_environment_info(&mut frame, left_column[4]);
-        self.draw_chart(self.view.voltage(), &mut frame, right_column[0]);
-        self.draw_chart(self.view.energy_rate(), &mut frame, right_column[1]);
-        self.draw_chart(self.view.temperature(), &mut frame, right_column[2]);
+        self.draw_chart(&self.view.voltage(), &mut frame, right_column[0]);
+        self.draw_chart(&self.view.energy_rate(), &mut frame, right_column[1]);
+        self.draw_chart(&self.view.temperature(), &mut frame, right_column[2]);
     }
 
     pub fn draw_tabs<B: Backend>(&self, frame: &mut Frame<B>, area: Rect) {
@@ -199,7 +199,7 @@ impl<'i> Painter<'i> {
             .block(gauge_block)
             .ratio(value)
             .style(Style::default().bg(Color::Black).fg(gauge_color))
-            .label("")
+            .label(&"")
             .render(frame, gauge_area);
         Paragraph::new(text.iter())
             .block(text_block)
@@ -418,7 +418,7 @@ impl<'i> Painter<'i> {
         Table::new(header.iter(), rows)
             .header_style(Style::default().modifier(Modifier::BOLD))
             .block(block)
-            .widths(&[17, 17])
+            .widths(&[Constraint::Length(17), Constraint::Length(17)])
             .render(frame, area);
     }
 }
