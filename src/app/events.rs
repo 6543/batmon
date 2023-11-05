@@ -19,8 +19,8 @@ pub enum Event {
 #[derive(Debug)]
 pub struct EventHandler {
     rx: mpsc::Receiver<Event>,
-    input_handle: thread::JoinHandle<()>,
-    tick_handle: thread::JoinHandle<()>,
+    _input_handle: thread::JoinHandle<()>,
+    _tick_handle: thread::JoinHandle<()>,
 }
 
 impl EventHandler {
@@ -33,29 +33,27 @@ impl EventHandler {
             thread::spawn(move || {
                 let stdin = io::stdin();
                 trace!("Input thread spawned");
-                for possible_key in stdin.keys() {
-                    if let Ok(key) = possible_key {
-                        let event = match key {
-                            Key::Left => Event::PreviousTab,
-                            Key::Right => Event::NextTab,
-                            Key::Char('q') => Event::Exit,
-                            Key::Ctrl('c') => Event::Exit,
-                            Key::Esc => Event::Exit,
-                            _ => continue,
-                        };
-                        let is_exit = event == Event::Exit;
+                for key in stdin.keys().flatten() {
+                    let event = match key {
+                        Key::Left => Event::PreviousTab,
+                        Key::Right => Event::NextTab,
+                        Key::Char('q') => Event::Exit,
+                        Key::Ctrl('c') => Event::Exit,
+                        Key::Esc => Event::Exit,
+                        _ => continue,
+                    };
+                    let is_exit = event == Event::Exit;
 
-                        if let Err(e) = tx.send(event) {
-                            // Now that's just terrible thing to do with poor thread :(
-                            warn!("Input thread failed to send event and will be terminated: {:?}", e);
-                            return;
-                        }
+                    if let Err(e) = tx.send(event) {
+                        // Now that's just terrible thing to do with poor thread :(
+                        warn!("Input thread failed to send event and will be terminated: {:?}", e);
+                        return;
+                    }
 
-                        // User had requested an exit, closing this thread too
-                        if is_exit {
-                            trace!("Input thread just sent the Exit event and going to terminate now");
-                            return;
-                        }
+                    // User had requested an exit, closing this thread too
+                    if is_exit {
+                        trace!("Input thread just sent the Exit event and going to terminate now");
+                        return;
                     }
                 }
             })
@@ -77,8 +75,8 @@ impl EventHandler {
 
         EventHandler {
             rx,
-            input_handle,
-            tick_handle,
+            _input_handle: input_handle,
+            _tick_handle: tick_handle,
         }
     }
 

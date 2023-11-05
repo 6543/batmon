@@ -27,7 +27,7 @@ pub fn init(config: Arc<Config>, views: Vec<View>) -> Result<Interface<impl Back
     let tabs = TabBar::new(tab_titles);
 
     Ok(Interface {
-        config,
+        _config: config,
         terminal,
         views,
         tabs,
@@ -37,7 +37,7 @@ pub fn init(config: Arc<Config>, views: Vec<View>) -> Result<Interface<impl Back
 /// Interface is a group tabs and tab contents
 #[derive(Debug)]
 pub struct Interface<B: Backend> {
-    config: Arc<Config>,
+    _config: Arc<Config>,
     terminal: Terminal<B>,
     views: Vec<View>,
     tabs: TabBar,
