@@ -13,7 +13,7 @@ fn parse_duration(raw: &str) -> Result<Duration, String> {
 
 /// Interactive batteries viewer.
 ///
-/// The following commands are supported while in battop:
+/// The following commands are supported while in batmon:
 ///
 /// * Right: move to next tab
 ///

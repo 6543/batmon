@@ -1,11 +1,11 @@
 [package]
-name = "battop"
+name = "batmon"
 version = "0.2.4"
-authors = ["svartalf <self@svartalf.info>"]
+authors = ["6543 <6543@obermui.de>"]
 edition = "2018"
 description = "Interactive batteries viewer"
-homepage = "https://github.com/svartalf/rust-battop"
-repository = "https://github.com/svartalf/rust-battop"
+homepage = "https://github.com/6543/batmon"
+repository = "https://github.com/6543/batmon"
 readme = "README.md"
 categories = ["os"]
 keywords = ["tui", "battery", "linux", "macos"]
@@ -13,7 +13,6 @@ license = "Apache-2.0"
 exclude = ["assets"]
 
 [badges]
-travis-ci = { repository = "svartalf/rust-battop", branch = "master" }
 maintenance = { status = "actively-developed" }
 
 [dependencies]
