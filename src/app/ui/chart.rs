@@ -106,9 +106,15 @@ impl ChartData {
         if self.enabled {
             match self.chart_type {
                 ChartType::Voltage => format!("{:.2} {}", self.value_latest, volt::abbreviation()),
-                ChartType::EnergyRate => format!("{:.2} {}", self.value_latest, watt::abbreviation()),
+                ChartType::EnergyRate => {
+                    format!("{:.2} {}", self.value_latest, watt::abbreviation())
+                }
                 ChartType::Temperature => match self.config.units() {
-                    Units::Human => format!("{:.2} {}", self.value_latest, degree_celsius::abbreviation()),
+                    Units::Human => format!(
+                        "{:.2} {}",
+                        self.value_latest,
+                        degree_celsius::abbreviation()
+                    ),
                     Units::Si => format!("{:.2} {}", self.value_latest, kelvin::abbreviation()),
                 },
             }
@@ -163,7 +169,10 @@ impl ChartData {
     }
 
     pub fn y_labels(&self) -> Vec<String> {
-        vec![format!("{:2.0}", self.y_lower()), format!("{:2.0}", self.y_upper())]
+        vec![
+            format!("{:2.0}", self.y_lower()),
+            format!("{:2.0}", self.y_upper()),
+        ]
     }
 
     pub fn y_bounds(&self) -> [f64; 2] {

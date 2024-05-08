@@ -31,8 +31,11 @@ impl View {
     pub fn update(&mut self, manager: &mut battery::Manager) -> Result<()> {
         manager.refresh(&mut self.battery)?;
 
-        self.voltage
-            .push(self.battery.voltage().get::<units::electric_potential::volt>());
+        self.voltage.push(
+            self.battery
+                .voltage()
+                .get::<units::electric_potential::volt>(),
+        );
         *self.voltage.battery_state() = self.battery.state();
 
         self.energy_rate
@@ -57,12 +60,18 @@ impl View {
     /// Return view title used in a tab header
     pub fn title(&self) -> String {
         if let Some(model) = self.battery.model() {
-            trace!("View is going to use battery model as a tab title: {}", model);
+            trace!(
+                "View is going to use battery model as a tab title: {}",
+                model
+            );
             return model.to_string();
         }
 
         if let Some(vendor) = self.battery.vendor() {
-            trace!("View is going to use battery vendor as a tab title: {}", vendor);
+            trace!(
+                "View is going to use battery vendor as a tab title: {}",
+                vendor
+            );
             return vendor.to_string();
         }
 

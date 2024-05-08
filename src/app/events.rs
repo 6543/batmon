@@ -46,7 +46,10 @@ impl EventHandler {
 
                     if let Err(e) = tx.send(event) {
                         // Now that's just terrible thing to do with poor thread :(
-                        warn!("Input thread failed to send event and will be terminated: {:?}", e);
+                        warn!(
+                            "Input thread failed to send event and will be terminated: {:?}",
+                            e
+                        );
                         return;
                     }
 

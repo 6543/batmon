@@ -40,7 +40,9 @@ use std::time::Duration;
 use tui::backend::Backend;
 use tui::layout::{Alignment, Constraint, Direction, Layout, Rect};
 use tui::style::{Color, Modifier, Style};
-use tui::widgets::{Axis, Block, Borders, Chart, Dataset, Gauge, Marker, Paragraph, Row, Table, Tabs, Text, Widget};
+use tui::widgets::{
+    Axis, Block, Borders, Chart, Dataset, Gauge, Marker, Paragraph, Row, Table, Tabs, Text, Widget,
+};
 use tui::Frame;
 
 use battery::units::electric_potential::volt;
@@ -161,7 +163,13 @@ impl<'i> Painter<'i> {
         // allocate areas for blocks
         let chunks = Layout::default()
             .direction(Direction::Horizontal)
-            .constraints([Constraint::Min(0), Constraint::Length(("|100.00 %|".len()) as u16)].as_ref())
+            .constraints(
+                [
+                    Constraint::Min(0),
+                    Constraint::Length(("|100.00 %|".len()) as u16),
+                ]
+                .as_ref(),
+            )
             .split(area);
 
         let (gauge_area, text_area) = (chunks[0], chunks[1]);
@@ -261,8 +269,16 @@ impl<'i> Painter<'i> {
         let battery = self.view.battery();
         let config = self.view.config();
 
-        let consumption = &format!("{:.2} {}", battery.energy_rate().get::<watt>(), watt::abbreviation());
-        let voltage = &format!("{:.2} {}", battery.voltage().get::<volt>(), volt::abbreviation());
+        let consumption = &format!(
+            "{:.2} {}",
+            battery.energy_rate().get::<watt>(),
+            watt::abbreviation()
+        );
+        let voltage = &format!(
+            "{:.2} {}",
+            battery.voltage().get::<volt>(),
+            volt::abbreviation()
+        );
         let capacity = &format!(
             "{:.2} {}",
             battery.state_of_health().get::<percent>(),
@@ -274,7 +290,11 @@ impl<'i> Painter<'i> {
                 battery.energy().get::<watt_hour>(),
                 watt_hour::abbreviation()
             ),
-            Units::Si => format!("{:.2} {}", battery.energy().get::<joule>(), joule::abbreviation()),
+            Units::Si => format!(
+                "{:.2} {}",
+                battery.energy().get::<joule>(),
+                joule::abbreviation()
+            ),
         };
         let last_full = &match config.units() {
             Units::Human => format!(
@@ -282,7 +302,11 @@ impl<'i> Painter<'i> {
                 battery.energy_full().get::<watt_hour>(),
                 watt_hour::abbreviation()
             ),
-            Units::Si => format!("{:.2} {}", battery.energy_full().get::<joule>(), joule::abbreviation()),
+            Units::Si => format!(
+                "{:.2} {}",
+                battery.energy_full().get::<joule>(),
+                joule::abbreviation()
+            ),
         };
         let full_design = &match config.units() {
             Units::Human => format!(
@@ -320,16 +344,25 @@ impl<'i> Painter<'i> {
         let battery = self.view.battery();
 
         let time_to_full = &match battery.time_to_full() {
-            Some(time) => humantime::format_duration(Duration::from_secs(time.get::<second>() as u64)).to_string(),
+            Some(time) => {
+                humantime::format_duration(Duration::from_secs(time.get::<second>() as u64))
+                    .to_string()
+            }
             None => "N/A".to_string(),
         };
 
         let time_to_empty = &match battery.time_to_empty() {
-            Some(time) => humantime::format_duration(Duration::from_secs(time.get::<second>() as u64)).to_string(),
+            Some(time) => {
+                humantime::format_duration(Duration::from_secs(time.get::<second>() as u64))
+                    .to_string()
+            }
             None => "N/A".to_string(),
         };
 
-        let items = vec![["Time to full", time_to_full], ["Time to empty", time_to_empty]];
+        let items = vec![
+            ["Time to full", time_to_full],
+            ["Time to empty", time_to_empty],
+        ];
         let header = ["Time", ""];
 
         self.draw_info_table(header, &items, block, frame, area);
@@ -342,7 +375,11 @@ impl<'i> Painter<'i> {
 
         let temperature = &match battery.temperature() {
             Some(temp) => match config.units() {
-                Units::Human => format!("{:.2} {}", temp.get::<degree_celsius>(), degree_celsius::abbreviation()),
+                Units::Human => format!(
+                    "{:.2} {}",
+                    temp.get::<degree_celsius>(),
+                    degree_celsius::abbreviation()
+                ),
                 Units::Si => format!("{:.2} {}", temp.get::<kelvin>(), kelvin::abbreviation()),
             },
             None => "N/A".to_string(),
@@ -363,7 +400,11 @@ impl<'i> Painter<'i> {
         area: Rect,
     ) {
         // convert header and items to strings
-        let header: Vec<String> = header.iter().cloned().map(|elem| elem.to_string()).collect();
+        let header: Vec<String> = header
+            .iter()
+            .cloned()
+            .map(|elem| elem.to_string())
+            .collect();
         let items: Vec<[String; 2]> = items
             .iter()
             .cloned()

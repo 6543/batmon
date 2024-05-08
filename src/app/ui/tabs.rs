@@ -6,10 +6,7 @@ pub struct TabBar {
 
 impl TabBar {
     pub fn new(titles: Vec<String>) -> TabBar {
-        TabBar {
-            titles,
-            index: 0,
-        }
+        TabBar { titles, index: 0 }
     }
 
     pub fn index(&self) -> usize {
