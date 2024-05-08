@@ -4,9 +4,9 @@
 ![Continuous integration](https://github.com/svartalf/rust-battop/workflows/Continuous%20integration/badge.svg)
 [![Packaging status](https://repology.org/badge/tiny-repos/battop.svg)](https://repology.org/project/battop/versions)
 [![dependency status](https://deps.rs/crate/battop/0.2.4/status.svg)](https://deps.rs/crate/battop/0.2.4)
-![Apache 2.0 OR MIT licensed](https://img.shields.io/badge/license-Apache2.0%2FMIT-blue.svg)
+![Apache 2.0 licensed](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
 
-`battop` is an interactive viewer, similar to `top`, `htop` and other *top utilities,
+`batmon` is an interactive viewer, similar to `top`, `htop` and other *top utilities,
 but about the batteries installed in your notebook.
 
 ![Screenshot](https://raw.githubusercontent.com/svartalf/rust-battop/master/assets/screenshot.png)
@@ -54,11 +54,3 @@ Simply running the `battop` command in your terminal should do the thing.
 Left and right arrows can be used to switch between different system batteries (if available).
 
 Run the `battop -h` command to see the additional available options.
-
-## License
-
-`battop` is double-released under the Apache License, Version 2.0 or the MIT License.
-
-## Donations
-
-If you appreciate my work and want to support me, you can do it [here](https://svartalf.info/donate/)
