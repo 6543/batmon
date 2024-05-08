@@ -10,7 +10,7 @@ pub type Result<T> = result::Result<T, Error>;
 pub enum Error {
     UserExit,
     NoBatteries,
-    Battery(battery::Error),
+    Battery(starship_battery::Error),
     Io(io::Error),
     Channel(mpsc::RecvError),
     Logger(log::SetLoggerError),
@@ -43,8 +43,8 @@ impl fmt::Display for Error {
     }
 }
 
-impl From<battery::Error> for Error {
-    fn from(e: battery::Error) -> Self {
+impl From<starship_battery::Error> for Error {
+    fn from(e: starship_battery::Error) -> Self {
         Error::Battery(e)
     }
 }

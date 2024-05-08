@@ -45,14 +45,14 @@ use tui::widgets::{
 };
 use tui::Frame;
 
-use battery::units::electric_potential::volt;
-use battery::units::energy::{joule, watt_hour};
-use battery::units::power::watt;
-use battery::units::ratio::{percent, ratio};
-use battery::units::thermodynamic_temperature::{degree_celsius, kelvin};
-use battery::units::time::second;
-use battery::units::Unit;
-use battery::State;
+use starship_battery::units::electric_potential::volt;
+use starship_battery::units::energy::{joule, watt_hour};
+use starship_battery::units::power::watt;
+use starship_battery::units::ratio::{percent, ratio};
+use starship_battery::units::thermodynamic_temperature::{degree_celsius, kelvin};
+use starship_battery::units::time::second;
+use starship_battery::units::Unit;
+use starship_battery::State;
 
 use super::{ChartData, TabBar, Units, View};
 

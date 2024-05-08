@@ -18,10 +18,8 @@ It was forked of <https://github.com/svartalf/rust-battop>.
  * It is free
  * Usually it just works!
 
-`batmon` is backed by a Rust crate [battery](https://crates.io/crates/battery)
-which provides unified cross-platform information about system batteries.\
-[Check it out](https://github.com/svartalf/rust-battery),
-if you want to gather the same information for your application!
+`batmon` is backed by a Rust crate [battery](https://crates.io/crates/starship_battery) which provides unified cross-platform information about system batteries.
+[Check it out](https://github.com/starship/rust-battery), if you want to gather the same information for your application!
 
 ## Installation
 

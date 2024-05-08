@@ -9,7 +9,7 @@ use super::ui;
 use crate::{Error, Result};
 
 pub fn init(config: Arc<Config>) -> Result<Application<impl Backend>> {
-    let manager = battery::Manager::new()?;
+    let manager = starship_battery::Manager::new()?;
 
     // This vec will be used for UI data pre-population before the first tick
     let batteries = manager
@@ -38,7 +38,7 @@ pub fn init(config: Arc<Config>) -> Result<Application<impl Backend>> {
 }
 
 pub struct Application<B: Backend> {
-    manager: battery::Manager,
+    manager: starship_battery::Manager,
     config: Arc<Config>,
     events: EventHandler,
     interface: ui::Interface<B>,

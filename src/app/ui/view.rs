@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use battery::units;
+use starship_battery::units;
 
 use super::{ChartData, ChartType, Units};
 use crate::app::Config;
@@ -10,14 +10,14 @@ use crate::Result;
 #[derive(Debug)]
 pub struct View {
     config: Arc<Config>,
-    battery: battery::Battery,
+    battery: starship_battery::Battery,
     voltage: ChartData,
     energy_rate: ChartData,
     temperature: ChartData,
 }
 
 impl View {
-    pub fn new(config: Arc<Config>, battery: battery::Battery) -> View {
+    pub fn new(config: Arc<Config>, battery: starship_battery::Battery) -> View {
         View {
             config: config.clone(),
             battery,
@@ -28,7 +28,7 @@ impl View {
     }
 
     /// Update internal state, but do not re-draw it
-    pub fn update(&mut self, manager: &mut battery::Manager) -> Result<()> {
+    pub fn update(&mut self, manager: &mut starship_battery::Manager) -> Result<()> {
         manager.refresh(&mut self.battery)?;
 
         self.voltage.push(
@@ -84,7 +84,7 @@ impl View {
         "Unknown battery".to_string()
     }
 
-    pub fn battery(&self) -> &battery::Battery {
+    pub fn battery(&self) -> &starship_battery::Battery {
         &self.battery
     }
 

@@ -1,11 +1,11 @@
 use std::sync::Arc;
 
-use battery::units::electric_potential::volt;
-use battery::units::power::watt;
-use battery::units::thermodynamic_temperature::{degree_celsius, kelvin};
-use battery::units::Unit;
-use battery::State;
 use itertools::{Itertools, MinMaxResult};
+use starship_battery::units::electric_potential::volt;
+use starship_battery::units::power::watt;
+use starship_battery::units::thermodynamic_temperature::{degree_celsius, kelvin};
+use starship_battery::units::Unit;
+use starship_battery::State;
 
 use super::Units;
 use crate::app::Config;
