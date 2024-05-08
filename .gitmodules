@@ -1,3 +1,0 @@
-[submodule "packages/arch-linux"]
-	path = packages/arch-linux
-	url = ssh://aur@archlinux.org/battop.git
