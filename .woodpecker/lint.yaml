@@ -1,0 +1,12 @@
+when:
+  branch: ${CI_REPO_DEFAULT_BRANCH}
+  event: [push, pull_request]
+
+steps:
+  lint:
+    image: rust
+    environment: [CARGO_TERM_COLOR=always]
+    commands:
+      - rustup component add rustfmt clippy
+      - cargo fmt --all --check
+      - cargo clippy --all-features -- --deny clippy::all --deny warnings
