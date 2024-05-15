@@ -25,14 +25,14 @@ pub struct EventHandler {
 impl EventHandler {
     pub fn from_config(config: &Config) -> EventHandler {
         let (tx, rx) = mpsc::channel();
-        let timeout = config.delay().clone();
+        let timeout = *config.delay();
         // Thread than will handle user input and send events to receiver
         let input_handle = {
             let tx = tx.clone();
             thread::spawn(move || {
                 let stdin = io::stdin();
                 trace!("Input thread spawned");
-                while let Ok(_) = crossterm::event::poll(timeout) {
+                while crossterm::event::poll(timeout).is_ok() {
                     if let Ok(CrosstermEvent::Key(key)) = crossterm::event::read() {
                         let event = match key {
                             KeyEvent {
