@@ -1,4 +1,5 @@
 when:
+  branch: ${CI_REPO_DEFAULT_BRANCH}
   event: [push, pull_request]
 
 matrix:
