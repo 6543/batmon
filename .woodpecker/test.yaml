@@ -1,0 +1,14 @@
+when:
+  event: [push, pull_request]
+
+matrix:
+  RUST: [stable, beta, nightly]
+
+steps:
+  test:
+    image: rust
+    environment: [CARGO_TERM_COLOR=always]
+    commands:
+      - rustup default $RUST
+      - cargo check
+      - cargo test --all-features
