@@ -281,6 +281,11 @@ impl<'i> Painter<'i> {
         );
         let capacity = &format!(
             "{:.2} {}",
+            battery.state_of_charge().get::<percent>(),
+            percent::abbreviation()
+        );
+        let health = &format!(
+            "{:.2} {}",
             battery.state_of_health().get::<percent>(),
             percent::abbreviation()
         );
@@ -330,6 +335,7 @@ impl<'i> Painter<'i> {
             [consumption_label, consumption],
             ["Voltage", voltage],
             ["Capacity", capacity],
+            ["Health", health],
             ["Current", current],
             ["Last full", last_full],
             ["Full design", full_design],
