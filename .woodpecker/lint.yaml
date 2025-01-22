@@ -5,7 +5,8 @@ when:
 steps:
   lint:
     image: rust
-    environment: [CARGO_TERM_COLOR=always]
+    environment:
+      CARGO_TERM_COLOR: always
     commands:
       - rustup component add rustfmt clippy
       - cargo fmt --all --check
