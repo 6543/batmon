@@ -33,8 +33,7 @@
         };
 
         lib = nixpkgs.lib;
-        craneLib = crane.lib.${system};
-
+        craneLib = crane.mkLib pkgs;
         src = lib.cleanSourceWith {
           src = craneLib.path ./.;
         };
