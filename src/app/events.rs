@@ -1,4 +1,3 @@
-use std::io;
 use std::sync::mpsc;
 use std::thread;
 
@@ -18,8 +17,8 @@ pub enum Event {
 #[derive(Debug)]
 pub struct EventHandler {
     rx: mpsc::Receiver<Event>,
-    input_handle: thread::JoinHandle<()>,
-    tick_handle: thread::JoinHandle<()>,
+    _input_handle: thread::JoinHandle<()>,
+    _tick_handle: thread::JoinHandle<()>,
 }
 
 impl EventHandler {
@@ -30,30 +29,29 @@ impl EventHandler {
         let input_handle = {
             let tx = tx.clone();
             thread::spawn(move || {
-                let stdin = io::stdin();
                 trace!("Input thread spawned");
                 while crossterm::event::poll(timeout).is_ok() {
                     if let Ok(CrosstermEvent::Key(key)) = crossterm::event::read() {
                         let event = match key {
                             KeyEvent {
                                 code: KeyCode::Left,
-                                modifiers: _,
+                                ..
                             } => Event::PreviousTab,
                             KeyEvent {
                                 code: KeyCode::Right,
-                                modifiers: _,
+                                ..
                             } => Event::NextTab,
                             KeyEvent {
                                 code: KeyCode::Char('q'),
-                                modifiers: _,
+                                ..
                             } => Event::Exit,
                             KeyEvent {
                                 code: KeyCode::Char('c'),
                                 modifiers: KeyModifiers::CONTROL,
+                                ..
                             } => Event::Exit,
                             KeyEvent {
-                                code: KeyCode::Esc,
-                                modifiers: _,
+                                code: KeyCode::Esc, ..
                             } => Event::Exit,
                             _ => continue,
                         };
@@ -96,8 +94,8 @@ impl EventHandler {
 
         EventHandler {
             rx,
-            input_handle,
-            tick_handle,
+            _input_handle: input_handle,
+            _tick_handle: tick_handle,
         }
     }
 

@@ -1,14 +1,15 @@
 use std::fmt;
+use std::io::Stdout;
 use std::sync::Arc;
 
-use tui::backend::Backend;
+use ratatui::backend::{Backend, CrosstermBackend};
 
 use super::config::Config;
 use super::events::{Event, EventHandler};
 use super::ui;
 use crate::{Error, Result};
 
-pub fn init(config: Arc<Config>) -> Result<Application<impl Backend>> {
+pub fn init(config: Arc<Config>) -> Result<Application<CrosstermBackend<Stdout>>> {
     let manager = starship_battery::Manager::new()?;
 
     // This vec will be used for UI data pre-population before the first tick
@@ -44,7 +45,10 @@ pub struct Application<B: Backend> {
     interface: ui::Interface<B>,
 }
 
-impl<B: Backend> Application<B> {
+impl<B: Backend> Application<B>
+where
+    B::Error: Into<std::io::Error>,
+{
     pub fn run(&mut self) -> Result<()> {
         loop {
             self.interface.draw()?;
