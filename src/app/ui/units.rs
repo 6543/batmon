@@ -10,12 +10,6 @@ pub enum Units {
     Si,
 }
 
-impl Units {
-    pub fn arg_variants() -> [&'static str; 2] {
-        ["human", "si"]
-    }
-}
-
 impl FromStr for Units {
     type Err = Error;
 
