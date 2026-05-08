@@ -15,10 +15,7 @@ use crate::app::Config;
 use crate::Result;
 
 #[allow(clippy::redundant_closure)]
-pub fn init(
-    _config: Arc<Config>,
-    views: Vec<View>,
-) -> Result<Interface<CrosstermBackend<Stdout>>> {
+pub fn init(_config: Arc<Config>, views: Vec<View>) -> Result<Interface<CrosstermBackend<Stdout>>> {
     debug_assert!(!views.is_empty());
 
     enable_raw_mode()?;
