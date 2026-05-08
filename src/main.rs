@@ -1,11 +1,9 @@
 #[macro_use]
-extern crate structopt;
-#[macro_use]
 extern crate log;
 
 use std::sync::Arc;
 
-use structopt::StructOpt;
+use clap::Parser;
 
 mod app;
 mod errors;
@@ -13,7 +11,7 @@ mod errors;
 pub use self::errors::{Error, Result};
 
 fn main() -> Result<()> {
-    let config = Arc::new(app::config::Config::from_args());
+    let config = Arc::new(app::config::Config::parse());
     stderrlog::new()
         .module(module_path!())
         .verbosity(config.verbosity())
