@@ -18,7 +18,7 @@ fn main() -> Result<()> {
         .timestamp(stderrlog::Timestamp::Second)
         .init()?;
 
-    trace!("Starting with {:?}", &config);
+    trace!("Starting with {:?}", config);
     let mut app = app::init(config)?;
 
     match app.run() {
