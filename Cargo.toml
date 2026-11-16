@@ -1,6 +1,6 @@
 [package]
 name = "batmon"
-version = "0.0.1"
+version = "1.0.0"
 authors = ["6543 <6543@obermui.de>"]
 edition = "2021"
 description = "Interactive batteries viewer"
