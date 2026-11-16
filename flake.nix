@@ -55,6 +55,7 @@
             rust-analyzer
             just
             fzf
+            cargo-audit
           ];
         };
 
